@@ -1,4 +1,4 @@
-# The Classification Pipeline
+# The Over Simplified Classifier
 ## What is Classification?
 Classification involves predicting which class an item belongs to. For example, classifying dogs and cats or defective and okay components. 
 ## When do we use Classifcation?
