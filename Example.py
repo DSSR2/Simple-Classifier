@@ -1,9 +1,9 @@
-from classification import classifier
+from Classification import classifier
 '''
 Trainng Example: 
 Data stored in ./Data
 Model to be used is base model
-Number of classes is 3
+Number of classes is 2
 Save new models in ./Models/
 '''
 classify = classifier("C0", 2, "Data/", "Models/")

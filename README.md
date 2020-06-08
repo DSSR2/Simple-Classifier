@@ -5,10 +5,10 @@ Classification involves predicting which class an item belongs to. For example, 
 When we want to segregate objects based on complex features into two or more classes or groups, we use the classification module. This is a black box classifier and the system learns important features on it's own. 
 For example: 
 #### A cat vs dog classifier
-![alt text](catVdog.jpg "Cat vs Dog")
+![alt text](Images/catVdog.jpg "Cat vs Dog")
 
 #### A fruit classifier
-![alt text](fruit.jpg "Cat vs Dog")
+![alt text](Images/fruit.jpg "Cat vs Dog")
 ## Choice of models:
 For simple images with simple features, use shallow models - C0, C1, C2. For images with complex features and patterns, use deeper models - C3, C4, C5. 
 A shallow model will be faster during training as well as deployment. Best practice is to start with shallow models and move to deeper models only when accuracy is low. 
