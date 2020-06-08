@@ -1,4 +1,4 @@
-# The Over Simplified Classifier
+# The Classification Pipeline
 ## What is Classification?
 Classification involves predicting which class an item belongs to. For example, classifying dogs and cats or defective and okay components. 
 ## When do we use Classifcation?
@@ -36,10 +36,10 @@ height_shift_range - 0-1, Default = 0
 Common examples are provided in [Example.py](./Example.py)
 
 ## Function Definitions:
-_* required_
 ### 1. _classifier()_ constructor 
 Takes 2 or more arguments. 
 #### Creating and training a new model:
+_* required_
 ```python
 classifier(Model_Name*, Number_of_Classes*, 
             Path_to_Data*, Model_Save_Path="./Models/") 

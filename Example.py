@@ -6,7 +6,7 @@ Model to be used is base model
 Number of classes is 3
 Save new models in ./Models/
 '''
-classify = classifier("C0", 3, "./Data/", "./Models/")
+classify = classifier("C0", 2, "Data/", "Models/")
 
 # Add a few extra augmentations
 classify.data_loader(shear_range=0.2, rotation_range=90, horizontal_flip=True)
@@ -17,13 +17,13 @@ classify.train(10)
 '''
 Load Trained Model
 '''
-classify = classifier("./Models/", ["Class 1", "Class 2", "Class 3"])
+classify = classifier("./Models/", ["Nok", "Ok"])
 
 '''
 Evaluation Example
 '''
 # During evaluation, the folder structure is the same as that of the train folder. 
-classify.evaluate("./Data/Evaluate/")
+classify.evaluate("./Data/Test/")
 
 '''
 Testing Example

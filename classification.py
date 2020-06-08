@@ -11,6 +11,7 @@ from glob import glob
 from tqdm import trange, tqdm
 from matplotlib import pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import classification_report, confusion_matrix
 
 '''
 Allow GPU Growth
@@ -75,15 +76,15 @@ class classifier():
         self.data_loader()
         self.model_chooser(classes=self.num_classes)
         
-    def data_loader(self, root=os.getcwd(), batch_size=16,
+    def data_loader(self, root=os.getcwd(), batch_size=32,
         rescale_val=1./255, shear_range=0, zoom_range=0,
         rotation_range=0, width_shift_range=0.0, height_shift_range=0.0, 
         brightness_range=None, fill_mode='nearest', 
-        horizontal_flip=False, vertical_flip=False, 
-        validation_split=0.0, dtype=None):
-        
+        horizontal_flip=False, vertical_flip=False, dtype=None):
+        self.batch_size = batch_size
         print("Data loader started.")
         root = self.data_path
+        validation_split = self.validation_split
         folders = os.listdir(root)
         train_datagen = ImageDataGenerator(
                 rescale=rescale_val,
@@ -155,9 +156,10 @@ class classifier():
         plt.pause(0.001)
         
 
-    def train(self, epochs, plot=True):
+    def train(self, epochs, plot=False):
+    
         print("Begin training. ", epochs, " epochs.")
-        self.hist = self.model.fit(self.train_data_gen, validation_data=(self.valid_data_gen), epochs=epochs, verbose=2)
+        self.hist = self.model.fit(self.train_data_gen, validation_data=(self.valid_data_gen), batch_size=self.batch_size, steps_per_epoch=len(self.train_data_gen), validation_steps=len(self.valid_data_gen), epochs=epochs, verbose=1)
         if(plot):
             self.plot(self.hist)
         self.save()
@@ -180,15 +182,24 @@ class classifier():
             self.labels = [i for i in range(1, shape[1]+1)]
         print("Load successful!")
 
-    def evaluate(self, path):
+    def evaluate(self, path, batch_size=32):
         test_datagen = ImageDataGenerator(rescale=1./255)
-        test_generator = test_datagen.flow_from_directory(path, target_size=self.img_size, batch_size=8)
-        eval = self.model.evaluate(test_generator)
+        test_generator = test_datagen.flow_from_directory(path, target_size=self.img_size, batch_size=batch_size)
+        eval = self.model.evaluate(test_generator, steps=len(test_generator))
         print("Test loss: ", eval[0])
         print("Test Accuracy: ", eval[1]*100, "%")
 
+        Y_pred = self.model.predict(test_generator, steps=len(test_generator))
+        y_pred = np.argmax(Y_pred, axis=1)
+        print('Confusion Matrix')
+        self.confusion_matrix = confusion_matrix(test_generator.classes, y_pred)
+        print(self.confusion_matrix)
+        print('Classification Report')
+        target_names = self.labels
+        self.report = classification_report(test_generator.classes, y_pred, target_names=target_names)
+        print(self.report)
+
     def predict(self, path):
-        
         sing_f = False
         if(os.path.isdir(path)):
             files = glob(path+"/*.png")+glob(path+"/*.jpg")+glob(path+"/*.bmp")
@@ -209,6 +220,5 @@ class classifier():
             op.append(ans)
         df = pd.DataFrame(op, columns=["File Name", "Label", "Confidence"])
         df.to_csv("results.csv", index=False)
-
 
             
