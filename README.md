@@ -78,11 +78,11 @@ evaluate(Path_to_Data*)
 This function can be used to test both a folder containing images as well as single images. In the case of folder testing, a _csv_ file is saved with the file name, the predicted class and the confidence score. 
 #### Folder testing
 ```python
-predict(Path_to_Folder*)
+predict(Path/to/Folder/*)
 ```
 #### File testing
 ```python
-predict(Path_to_File*)
+predict(Path/to/File.jpg*)
 ```
 
 ## Folder structure to be followed:
